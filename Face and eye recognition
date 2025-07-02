@@ -1,0 +1,60 @@
+import cv2
+import matplotlib.pyplot as plt
+%matplotlib widget
+
+img=cv2.imread('mlika4.jpg')
+
+cam=cv2.VideoCapture(0)
+
+_ , img_webcam = cam.read()
+ishow(img_webcam)
+
+def ishow(image):
+    cv2.imshow('image',image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+ishow(img)
+
+face_model=cv2.CascadeClassifier("haarcascade_eye.xml")
+
+face_model2=cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
+
+gray=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+
+ishow(img)
+
+face=face_model.detectMultiScale(
+    gray
+)
+
+face2=face_model2.detectMultiScale(
+    gray
+)
+
+plt.close()
+plt.imshow(gray)
+plt.show()
+
+out1=cv2.rectangle(gray,(100,100),(200,200),(0,250,0),3)
+
+x=face[0][0]
+y=face[0][1]
+x2=x+ face[0][2]
+y2=y+ face[0][3]
+
+xb=face[1][0]
+yb=face[1][1]
+xb2=xb+ face[1][2]
+yb2=yb+ face[1][3]
+
+xs=face2[0][0]
+ys=face2[0][1]
+xs2=xs+ face2[0][2]
+ys2=ys+ face2[0][3]
+
+img2=img.copy()
+out1=cv2.rectangle(img2,(x,y),(x2,y2),(250,0,0),3)
+out1=cv2.rectangle(img2,(xb,yb),(xb2,yb2),(0,0,250),3)
+out1=cv2.rectangle(img2,(xs,ys),(xs2,ys2),(250,0,250),3)
+ishow(out1)
